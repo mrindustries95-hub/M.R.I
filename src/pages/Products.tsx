@@ -1,98 +1,487 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import { IconArrow, IconCheck, IconGlobe, IconLayers, IconPackage } from "../components/Icons";
+import {
+  IconArrow,
+  IconCheck,
+  IconGlobe,
+  IconLayers,
+  IconPackage,
+} from "../components/Icons";
 import { LPageHeader } from "../components/LPageHeader";
 import { ScrollReveal } from "../components/ScrollReveal";
 import { MagneticButton } from "../components/MagneticButton";
 
-export const Products = ({ openQuote }) => {
-  const [filter, setFilter] = useState('All');
-  const cats = ['All','MS Spares','SS Fittings','Flanges'];
-  const products = [
-    {name:'Heavy Duty MS Spares',cat:'MS Spares',desc:'Industrial grade mild steel spares for borewell systems with high tensile strength.',img:'https://picsum.photos/seed/pp1/600/400'},
-    {name:'SS 304 Fittings',cat:'SS Fittings',desc:'Premium stainless steel fittings for chemical resistance and high-pressure control.',img:'https://picsum.photos/seed/pp2/600/400'},
-    {name:'M.R Industries Flanges',cat:'Flanges',desc:'High-accuracy flanges to IS/DIN/BS standards for industrial pipe connections.',img:'https://picsum.photos/seed/pp3/600/400'},
-    {name:'MS Threaded Pipes',cat:'MS Spares',desc:'Durable threaded pipes for secure borewell assembly and structural integrity.',img:'https://picsum.photos/seed/pp4/600/400'},
-    {name:'SS Valve Components',cat:'SS Fittings',desc:'M.R Industries valve parts for fluid control in corrosive industrial environments.',img:'https://picsum.photos/seed/pp5/600/400'},
-    {name:'MS Industrial Adapters',cat:'MS Spares',desc:'Versatile adapters for seamless integration between industrial piping systems.',img:'https://picsum.photos/seed/pp6/600/400'},
-  ];
-  const filtered = filter==='All' ? products : products.filter(p=>p.cat===filter);
+const actualProducts = [
+  {
+    name: "SS Hose Collar",
+    cat: "SS Fittings",
+    sizes: [
+      '1/2"',
+      '5/8"',
+      '3/4"',
+      '1"',
+      '1 1/4"',
+      '1 1/2"',
+      '2"',
+      '2 1/2"',
+      '3"',
+      '4"',
+    ],
+  },
+  {
+    name: "MS Hose Collar",
+    cat: "MS Spares",
+    sizes: [
+      '1/2"',
+      '5/8"',
+      '3/4"',
+      '1"',
+      '1 1/4"',
+      '1 1/2"',
+      '2"',
+      '2 1/2"',
+      '3"',
+      '4"',
+    ],
+  },
+  {
+    name: "SS Reducer Hose Collar",
+    cat: "SS Fittings",
+    sizes: [
+      '1 1/4 * 1"',
+      '1 1/2 * 1 1/4"',
+      '2 * 1 1/2"',
+      '2 1/2 * 2"',
+      '3 * 2 1/2"',
+    ],
+  },
+  {
+    name: "MS Reducer Hose Collar",
+    cat: "MS Spares",
+    sizes: [
+      '1 1/4 * 1"',
+      '1 1/2 * 1 1/4"',
+      '2 * 1 1/2"',
+      '2 1/2 * 2"',
+      '3 * 2 1/2"',
+    ],
+  },
+  {
+    name: "SS Hose Connector",
+    cat: "SS Fittings",
+    sizes: [
+      '1/2"',
+      '5/8"',
+      '3/4"',
+      '1"',
+      '1 1/4"',
+      '1 1/2"',
+      '2"',
+      '2 1/2"',
+      '3"',
+      '4"',
+    ],
+  },
+  {
+    name: "MS Hose Connector",
+    cat: "MS Spares",
+    sizes: [
+      '1/2"',
+      '5/8"',
+      '3/4"',
+      '1"',
+      '1 1/4"',
+      '1 1/2"',
+      '2"',
+      '2 1/2"',
+      '3"',
+      '4"',
+    ],
+  },
+  {
+    name: "SS Column Pipe Adapter",
+    cat: "SS Fittings",
+    sizes: ['1"', '1 1/4"', '1 1/2"', '2"', '2 1/2"', '3"', '4"'],
+  },
+  {
+    name: "CI Column Pipe Adapter",
+    cat: "CI Spares",
+    sizes: ['1"', '1 1/4"', '1 1/2"', '2"', '2 1/2"', '3"', '4"'],
+  },
+  {
+    name: "SS Reducer Column Pipe Adapter",
+    cat: "SS Fittings",
+    sizes: [
+      '1 1/4 * 1"',
+      '1 1/2 * 1 1/4"',
+      '2 * 1 1/2"',
+      '2 1/2 * 2"',
+      '3 * 2 1/2"',
+      '4 * 3"',
+    ],
+  },
+  {
+    name: "CI Reducer Column Pipe Adapter",
+    cat: "CI Spares",
+    sizes: [
+      '1 1/4 * 1"',
+      '1 1/2 * 1 1/4"',
+      '2 * 1 1/2"',
+      '2 1/2 * 2"',
+      '3 * 2 1/2"',
+      '4 * 3"',
+    ],
+  },
+  {
+    name: "Bore Well Cap",
+    cat: "Caps",
+    sizes: ['1"', '1 1/4"', '1 1/2"', '2"', '6.5"'],
+    details: "MS: 8mm/2mm thk. SS: 3mm thk.",
+  },
+  {
+    name: "Bore Clamp",
+    cat: "Clamps",
+    sizes: ['1"', '1 1/4"', '1 1/2"', '2"', '2 1/2"', '3"'],
+    details: "Available in MS & SS",
+  },
+  {
+    name: "CI NRV Ballwall",
+    cat: "Valves",
+    sizes: ['1"', '1 1/4"', '1 1/2"', '2"', '2 1/2"', '3"'],
+  },
+
+  {
+    name: "CRI Model NRV",
+    cat: "Valves",
+    sizes: ['1 1/4"', '1 1/2"', '2"', '2 1/2"', '3"'],
+  },
+
+  { name: "Metal NRV", cat: "Valves", sizes: ['1"', '1 1/4"', '1 1/2"', '2"'] },
+
+  {
+    name: "GI Bend and Coupling",
+    cat: "GI Fittings",
+    sizes: ['1"', '1 1/4"', '1 1/2"', '2"', '2 1/2"', '3"', '4"'],
+  },
+  { name: "Wire Cable", cat: "Cables", sizes: ["1.5", "2.5", "4", "6"] },
+  {
+    name: "Rope",
+    cat: "Cables",
+    sizes: [
+      "6 mm",
+      "8 mm",
+      "10 mm",
+      "12 mm",
+      "14 mm",
+      "16 mm",
+      "18 mm",
+      "20 mm",
+      "22 mm",
+      "24 mm",
+    ],
+  },
+  { name: "MS T Hose Collar", cat: "MS Spares", sizes: ["Custom"] },
+  { name: "Openwell Elbow", cat: "Fittings", sizes: ["Custom"] },
+  {
+    name: "SS Reducer Bush",
+    cat: "SS Fittings",
+    sizes: [
+      '1 1/4 * 1"',
+      '1 1/2 * 1 1/4"',
+      '2 * 1 1/2"',
+      '2 1/2 * 2"',
+      '3 * 2 1/2"',
+      '4 * 3"',
+      '2 * 1"',
+      '1 1/2 * 1"',
+      '2 1/2 * 1 1/2"',
+    ],
+  },
+  {
+    name: "MS Reducer Bush",
+    cat: "MS Spares",
+    sizes: [
+      '1 1/4 * 1"',
+      '1 1/2 * 1 1/4"',
+      '2 * 1 1/2"',
+      '2 1/2 * 2"',
+      '3 * 2 1/2"',
+      '4 * 3"',
+      '2 * 1"',
+      '1 1/2 * 1"',
+      '2 1/2 * 1 1/2"',
+    ],
+  },
+  {
+    name: "SS Reverse Bush",
+    cat: "SS Fittings",
+    sizes: [
+      '1 * 1 1/4"',
+      '1 1/4 * 1 1/2"',
+      '1 1/2 * 2"',
+      '2 * 2 1/2"',
+      '2 1/2 * 3"',
+      '3 * 4"',
+    ],
+  },
+  {
+    name: "MS Reverse Bush",
+    cat: "MS Spares",
+    sizes: [
+      '1 * 1 1/4"',
+      '1 1/4 * 1 1/2"',
+      '1 1/2 * 2"',
+      '2 * 2 1/2"',
+      '2 1/2 * 3"',
+      '3 * 4"',
+    ],
+  },
+  {
+    name: "UPVC Sub Pipe",
+    cat: "Pipes",
+    sizes: ["KMP", "TRUEBORE", "ASHIRVAD"],
+  },
+  {
+    name: "Open Well Strainer Jali",
+    cat: "SS Fittings",
+    sizes: ['2"', '2 1/2"', '3"'],
+  },
+  { name: "SS & MS Elbow", cat: "Fittings", sizes: ['2 1/2"', '3"'] },
+  { name: "Panel Board", cat: "Misc", sizes: ["SS B/W/N"] },
+];
+
+export const Products: React.FC<{ openQuote?: (id?: string) => void }> = ({
+  openQuote,
+}) => {
+  const [filter, setFilter] = useState<string>("SS Fittings");
+  // load product images with Vite's glob (returns URLs at build time)
+  const images = (import.meta as any).glob(
+    "../assets/images/products/*.{png,jpg,jpeg,svg}",
+    { as: "url", eager: true },
+  ) as Record<string, string>;
+  // slugify helper to match product names to filenames
+  const slugify = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/&/g, "and")
+      .replace(/\.[^/.]+$/, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+
+  // normalize filenames to base slugs (handles spaces/caps in actual filenames)
+  const normalizedImages = Object.keys(images).reduce(
+    (acc, k) => {
+      const fn = k.split("/").pop() || "";
+      const base = slugify(fn);
+      // prefer png/jpg over svg when multiple variants exist
+      if (!acc[base]) acc[base] = (images as Record<string, string>)[k];
+      else {
+        const extOrder = ["png", "jpg", "jpeg", "svg"];
+        const existing = Object.keys(images).find(
+          (x) => (images as Record<string, string>)[x] === acc[base],
+        );
+        const existingExt = existing ? existing.split(".").pop() : "";
+        const newExt = fn.split(".").pop() || "";
+        if (extOrder.indexOf(newExt) < extOrder.indexOf(existingExt || "svg")) {
+          acc[base] = (images as Record<string, string>)[k];
+        }
+      }
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
+
+  // Create simpler grouping to fit on screen cleanly:
+  const groupedCats = {
+    "SS Fittings": actualProducts.filter((p) => p.cat === "SS Fittings"),
+    "MS Spares": actualProducts.filter((p) => p.cat === "MS Spares"),
+    "Valves & Caps": actualProducts.filter(
+      (p) => p.cat === "Valves" || p.cat === "Caps",
+    ),
+    "Pipes & Cables": actualProducts.filter(
+      (p) => p.cat === "Pipes" || p.cat === "Cables",
+    ),
+    Others: actualProducts.filter(
+      (p) =>
+        ![
+          "SS Fittings",
+          "MS Spares",
+          "Valves",
+          "Caps",
+          "Pipes",
+          "Cables",
+        ].includes(p.cat),
+    ),
+  };
+
+  const cats = Object.keys(groupedCats);
+  const filtered =
+    (groupedCats as Record<string, typeof actualProducts>)[filter] ||
+    actualProducts;
+
   return (
     <>
-      <LPageHeader title="INDUSTRIAL" accent="INVENTORY" sub="A comprehensive catalogue of precision-engineered spares and components." />
-      <div style={{ background:'white', borderBottom:'1px solid #d0dce8', position:'sticky', top:72, zIndex:40 }}>
-        <div className="container-max" style={{ padding:'16px var(--section-px)', display:'flex', justifyContent:'center', alignItems:'center', flexWrap:'wrap', gap:12 }}>
-          <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
-            {cats.map(c => <button key={c} onClick={()=>setFilter(c)} className={`fpill ${filter===c?'on':'off'}`}>{c}</button>)}
-          </div>
-        </div>
-      </div>
-      <div className="section-padding">
-        <div className="container-max">
-          <div style={{ display:'grid', gap:24 }} className="grid-3">
-            {filtered.map((p,i) => (
-              <ScrollReveal key={p.name} animation="fade-up" delay={i * 0.05}>
-                <div className="lpcard">
-                  <div className="lpimg" style={{ position:'relative', overflow:'hidden', height:200 }}>
-                    <img src={p.img} alt={p.name} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} referrerPolicy="no-referrer" />
-                  </div>
-                  <div style={{ padding:'24px 28px 28px' }}>
-                    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:12 }}>
-                      <h3 className="bc" style={{ fontWeight:800, fontSize:20, color:'#0a1628', textTransform:'uppercase', letterSpacing:'0.03em', lineHeight:1.2 }}>{p.name}</h3>
-                      <span className="bc" style={{ background:'#0099cc', color:'white', fontSize:9, fontWeight:700, letterSpacing:'0.15em', textTransform:'uppercase', padding:'3px 10px', flexShrink:0, marginLeft:8, borderRadius:2 }}>{p.cat}</span>
-                    </div>
-                    <p style={{ fontSize:14, color:'#5a7080', lineHeight:1.75, marginBottom:20 }}>{p.desc}</p>
-                    <button className="bc" style={{ background:'none', border:'none', cursor:'pointer', fontWeight:700, fontSize:11, letterSpacing:'0.2em', textTransform:'uppercase', color:'#0099cc', display:'flex', alignItems:'center', gap:8 }}>
-                      View Details <IconArrow size={14}/>
-                    </button>
-                  </div>
-                </div>
-              </ScrollReveal>
+      <LPageHeader
+        title="INDUSTRIAL"
+        accent="INVENTORY"
+        sub="A comprehensive catalogue of precision-engineered spares and components."
+      />
+      <div
+        style={{
+          background: "white",
+          borderBottom: "1px solid #d0dce8",
+          position: "sticky",
+          top: 72,
+          zIndex: 40,
+        }}
+      >
+        <div
+          className="container-max"
+          style={{
+            padding: "16px var(--section-px)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: 12,
+          }}
+        >
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {cats.map((c) => (
+              <button
+                key={c}
+                onClick={() => setFilter(c)}
+                className={`fpill ${filter === c ? "on" : "off"}`}
+              >
+                {c}
+              </button>
             ))}
           </div>
         </div>
       </div>
-      <div style={{ background:'#e4ecf4', borderTop:'1px solid #d0dce8', borderBottom:'1px solid #d0dce8' }} className="banner-padding">
-        <div className="grid-4 container-max">
-          {[
-            {icon:<IconPackage/>,label:'Material',val:'MS / SS'},
-            {icon:<IconCheck/>,label:'Finish',val:'Zinc Plated'},
-            {icon:<IconGlobe/>,label:'Standards',val:'IS / DIN / BS'},
-            {icon:<IconLayers/>,label:'MOQ',val:'10 Units'},
-          ].map((s,i) => (
-            <ScrollReveal key={i} animation="fade-right" delay={i * 0.1}>
-              <div style={{ display:'flex', alignItems:'center', gap:16, padding:'0 32px', borderRight:i<3?'1px solid #d0dce8':'none' }}>
-                <div style={{color:'#0099cc'}}>{s.icon}</div>
-                <div>
-                  <div className="bc" style={{ fontWeight:700, fontSize:10, letterSpacing:'0.2em', textTransform:'uppercase', color:'#7a8a9a' }}>{s.label}</div>
-                  <div className="bc" style={{ fontWeight:800, fontSize:17, color:'#0a1628' }}>{s.val}</div>
-                </div>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-      </div>
       <div className="section-padding">
         <div className="container-max">
-        <ScrollReveal animation="zoom-in">
-          <div style={{ maxWidth:760, margin:'0 auto', background:'linear-gradient(135deg,#0a1628,#0d2040)', padding:'72px 60px', textAlign:'center', position:'relative', overflow:'hidden' }}>
-            <div className="igrid" style={{ position:'absolute', inset:0, opacity:0.1 }} />
-            <div style={{ position:'relative' }}>
-              <h2 className="bb" style={{ fontSize:56, color:'white', marginBottom:16 }}>
-                Need a <span style={{color:'#0088ff'}}>Custom</span> Spec?
-              </h2>
-              <p style={{ color:'rgba(255,255,255,0.45)', marginBottom:40, fontSize:16 }}>Our team manufactures to your exact blueprints.</p>
-              <div style={{ display:'flex', gap:16, justifyContent:'center', flexWrap:'wrap' }}>
-                <MagneticButton>
-                  <button className="btn-p" onClick={openQuote}><span>Request Quote</span></button>
-                </MagneticButton>
-                <MagneticButton>
-                  <button className="btn-g">Download Catalogue</button>
-                </MagneticButton>
+          <div style={{ display: "grid", gap: 24 }} className="grid-3">
+            {filtered.map((p: any, i: number) => (
+              <div key={p.name}>
+                <ScrollReveal animation="zoom-in" delay={i * 0.02}>
+                  <div
+                    className="lpcard"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      height: "100%",
+                    }}
+                  >
+                    <div
+                      style={{
+                        padding: "clamp(16px, 5vw, 28px)",
+                        flexGrow: 1,
+                        background: "#f8fafd",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "flex-start",
+                          marginBottom: 16,
+                        }}
+                      >
+                        <h3
+                          className="bc"
+                          style={{
+                            fontWeight: 800,
+                            fontSize: 18,
+                            color: "#0a1628",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.03em",
+                            lineHeight: 1.2,
+                          }}
+                        >
+                          {p.name}
+                        </h3>
+                        <span
+                          className="bc"
+                          style={{
+                            background: "#0099cc",
+                            color: "white",
+                            fontSize: 9,
+                            fontWeight: 700,
+                            letterSpacing: "0.15em",
+                            textTransform: "uppercase",
+                            padding: "3px 10px",
+                            flexShrink: 0,
+                            marginLeft: 8,
+                            borderRadius: 2,
+                          }}
+                        >
+                          {p.cat}
+                        </span>
+                      </div>
+                      {p.details && (
+                        <p
+                          style={{
+                            fontSize: 13,
+                            color: "#5a7080",
+                            lineHeight: 1.6,
+                            marginBottom: 16,
+                          }}
+                        >
+                          {p.details}
+                        </p>
+                      )}
+                      {/* product image (falls back to placeholder SVG created in assets) */}
+                      <div style={{ width: "100%", marginBottom: 12 }}>
+                        {(() => {
+                          const slug = slugify(p.name);
+                          const src =
+                            normalizedImages[slug] ??
+                            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500"><rect width="100%" height="100%" fill="%23f8fafd"/></svg>';
+                          return (
+                            <img
+                              src={src}
+                              alt={p.name}
+                              style={{
+                                width: "100%",
+                                height: 160,
+                                objectFit: "contain",
+                              }}
+                            />
+                          );
+                        })()}
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: 6,
+                          marginTop: "auto",
+                        }}
+                      >
+                        {p.sizes.map((s: string) => (
+                          <span
+                            key={s}
+                            style={{
+                              background: "white",
+                              border: "1px solid #d0dce8",
+                              color: "#3a4a5c",
+                              fontSize: 12,
+                              padding: "4px 8px",
+                              borderRadius: 2,
+                              fontWeight: 500,
+                            }}
+                          >
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </ScrollReveal>
               </div>
-            </div>
+            ))}
           </div>
-        </ScrollReveal>
         </div>
       </div>
     </>

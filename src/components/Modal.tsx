@@ -20,14 +20,14 @@ export const Modal = ({ open, close }) => {
         style={{ position:'absolute', inset:0, background:'rgba(6,8,15,0.88)', backdropFilter:'blur(10px)' }} />
       <motion.div initial={{opacity:0,y:40,scale:0.95}} animate={{opacity:1,y:0,scale:1}}
         style={{ position:'relative', width:'100%', maxWidth:520, background:'#0b0f1c',
-        border:'1px solid rgba(0,136,255,0.25)', padding:48, borderRadius:2, maxHeight:'90vh', overflowY:'auto' }}>
+        border:'1px solid rgba(0,136,255,0.25)', padding: 'clamp(20px, 6vw, 48px)', borderRadius:2, maxHeight:'90vh', overflowY:'auto' }}>
         <button onClick={close} style={{ position:'absolute', top:16, right:16, background:'none', border:'none', color:'rgba(200,216,232,0.4)', cursor:'pointer' }}><IconX/></button>
         <div className="sec-label" style={{marginBottom:16}}>Get Started</div>
-        <h2 className="bb" style={{ fontSize:52, color:'white', marginBottom:32, lineHeight:1 }}>
-          REQUEST A <span style={{color:'#0088ff'}}>QUOTE</span>
+        <h2 className="bb" style={{ fontSize: 'clamp(32px, 8vw, 52px)', color:'white', marginBottom:32, lineHeight:1, textTransform: 'lowercase' }}>
+          GENERATE <span style={{color:'#0088ff'}}>QUOTE</span>
         </h2>
         <form onSubmit={handleSubmit} style={{ display:'flex', flexDirection:'column', gap:16 }}>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap:12 }}>
             <div>
               <label className="bc" style={{ fontSize:10, letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(200,216,232,0.35)', fontWeight:700, display:'block', marginBottom:6 }}>Full Name</label>
               <input 
@@ -47,7 +47,7 @@ export const Modal = ({ open, close }) => {
               />
             </div>
           </div>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap:12 }}>
             <div>
               <label className="bc" style={{ fontSize:10, letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(200,216,232,0.35)', fontWeight:700, display:'block', marginBottom:6 }}>Email Address</label>
               <input 

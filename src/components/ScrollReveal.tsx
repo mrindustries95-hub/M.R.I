@@ -53,22 +53,16 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   className = '',
   style = {},
 }) => {
-  const variants = animations[animation];
-
   return (
-    <motion.div
-      initial={variants.initial}
-      whileInView={variants.whileInView}
-      viewport={{ once, margin: "-50px", amount: 0.1 }}
-      transition={{ 
-        duration, 
-        delay, 
-        ease: [0.16, 1, 0.3, 1] // Custom cubic-bezier for smoother feel
-      }}
+    <div
       className={className}
       style={{ ...style, perspective: '1000px' }}
+      data-aos={animation}
+      data-aos-delay={Math.floor(delay * 1000)}
+      data-aos-duration={Math.floor(duration * 1000)}
+      data-aos-once={once}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };

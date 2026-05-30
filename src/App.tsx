@@ -2,11 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 // Components
 import { Navbar } from "./components/Navbar";
+import { Logo } from "./components/Logo";
 import { Footer } from "./components/Footer";
-import { Modal } from "./components/Modal";
 
 // Pages
 import { Home } from "./pages/Home";
@@ -16,17 +18,18 @@ import { Quality } from "./pages/Quality";
 import { Contact } from "./pages/Contact";
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState('home');
-  const [quoteOpen, setQuoteOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    AOS.init({ once: true, duration: 800 });
+
     // Initialize Lenis for smooth scrolling
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
+      orientation: "vertical",
+      gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 2,
@@ -43,14 +46,23 @@ export default function App() {
     requestAnimationFrame(raf);
 
     const handleScroll = () => {
-      const sections = ['home', 'products', 'customization', 'quality', 'contact'];
+      const sections = [
+        "home",
+        "products",
+        "customization",
+        "quality",
+        "contact",
+      ];
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
           const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
             setActiveSection(section);
             break;
           }
@@ -58,11 +70,11 @@ export default function App() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    
+    window.addEventListener("scroll", handleScroll);
+
     return () => {
       lenis.destroy();
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -75,55 +87,61 @@ export default function App() {
 
   return (
     <div>
-      <Navbar activeSection={activeSection} scrollToSection={scrollToSection} openQuote={() => setQuoteOpen(true)} />
-      <Modal open={quoteOpen} close={() => setQuoteOpen(false)} />
+      <Navbar
+        activeSection={activeSection}
+        scrollToSection={scrollToSection}
+        openQuote={() => scrollToSection("contact")}
+      />
 
       <main>
-        <motion.div 
+        <motion.div
           id="home"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <Home setPage={scrollToSection} openQuote={() => setQuoteOpen(true)} />
+          <Home
+            setPage={scrollToSection}
+            openQuote={() => scrollToSection("contact")}
+          />
         </motion.div>
 
-        <motion.div 
-          id="products" 
+        <motion.div
+          id="products"
           className="lmode"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <Products openQuote={() => setQuoteOpen(true)} />
+          <Products openQuote={() => scrollToSection("contact")} />
         </motion.div>
-        
-        <motion.div 
-          id="customization" 
+
+        <motion.div
+          id="customization"
           className="lmode"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <Customization openQuote={() => setQuoteOpen(true)} />
+          <Customization openQuote={() => scrollToSection("contact")} />
         </motion.div>
-        
-        <motion.div 
-          id="quality" 
+
+        <motion.div
+          id="quality"
           className="lmode"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <Quality openQuote={() => setQuoteOpen(true)} />
+          <Quality openQuote={() => scrollToSection("contact")} />
         </motion.div>
-        
-        <motion.div 
-          id="contact" 
+
+        <motion.div
+          id="contact"
           className="lmode"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}

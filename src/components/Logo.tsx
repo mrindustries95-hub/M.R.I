@@ -1,25 +1,88 @@
-import React from 'react';
-import { IconGear } from './Icons';
+import React from "react";
 
-export const Logo = ({ dark = true }) => (
-  <div style={{ display:'flex', alignItems:'center', gap:12, cursor:'pointer' }}>
-    <div style={{
-      width:40, height:40, background: 'transparent',
-      display:'flex', alignItems:'center', justifyContent:'center',
-      flexShrink:0, transition:'all 0.4s'
-    }} onMouseEnter={e=>{e.currentTarget.style.transform='scale(1.1) rotate(10deg)';}}
-       onMouseLeave={e=>{e.currentTarget.style.transform='scale(1) rotate(0deg)';}}>
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 1L15.09 7.26L22 8.27L17 13.14L18.18 20.02L12 16.77L5.82 20.02L7 13.14L2 8.27L8.91 7.26L12 1Z" fill="#E3242B" />
-        <text x="50%" y="60%" dominantBaseline="middle" textAnchor="middle" fill="#FFC107" fontSize="5" fontWeight="bold">M.R.I.</text>
+export const Logo: React.FC<{ dark?: boolean }> = ({ dark = true }) => (
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: 16,
+      cursor: "pointer",
+    }}
+  >
+    <div
+      style={{
+        width: 64,
+        height: 64,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+        transition: "transform 0.3s ease",
+      }}
+      onMouseEnter={(e) =>
+        (e.currentTarget.style.transform = "scale(1.15) rotate(5deg)")
+      }
+      onMouseLeave={(e) =>
+        (e.currentTarget.style.transform = "scale(1) rotate(0deg)")
+      }
+    >
+      <svg
+        viewBox="0 0 100 100"
+        width="100%"
+        height="100%"
+        style={{ display: "block" }}
+      >
+        <filter id="star-glow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow
+            dx="0"
+            dy="2"
+            stdDeviation="3"
+            floodColor="#FF2E2E"
+            floodOpacity={dark ? "0.5" : "0.25"}
+          />
+        </filter>
+        <polygon
+          points="50,5 64,36 95,36 71,58 79,91 50,72 21,91 29,58 5,36 36,36"
+          fill="#FF2E2E"
+          filter="url(#star-glow)"
+        />
+        <text
+          x="50"
+          y="52.5"
+          fill="#FFD700"
+          fontSize="14.5"
+          fontWeight="900"
+          fontFamily="'Barlow Condensed', sans-serif"
+          textAnchor="middle"
+          dominantBaseline="middle"
+          letterSpacing="0.03em"
+        >
+          M.R.I.
+        </text>
       </svg>
     </div>
-    <div style={{ display:'flex', flexDirection:'column', lineHeight:1 }}>
-      <span className="bb" style={{ fontSize:20, letterSpacing:'0.05em', color: dark?'white':'#0a1628' }}>
-        M.R <span style={{ color:'#E3242B' }}>Industries</span>
+    <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
+      <span
+        className="nav-brand"
+        style={{
+          fontSize: 24,
+          color: dark ? "white" : "#0a1628",
+        }}
+      >
+        M.R <span style={{ color: "#FF2E2E" }}>INDUSTRIES</span>
       </span>
-      <span className="bc" style={{ fontSize:9, letterSpacing:'0.3em', textTransform:'uppercase', color: dark?'rgba(255,255,255,0.4)':'rgba(10,22,40,0.4)', marginTop:2, fontWeight:700 }}>
-        Est. 1995
+      <span
+        className="bc"
+        style={{
+          fontSize: 10.5,
+          letterSpacing: "0.3em",
+          textTransform: "uppercase",
+          color: dark ? "rgba(255,255,255,0.4)" : "rgba(10,22,40,0.4)",
+          marginTop: 3,
+          fontWeight: 700,
+        }}
+      >
+        Est. 1996
       </span>
     </div>
   </div>
