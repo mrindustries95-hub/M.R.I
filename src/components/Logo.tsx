@@ -108,7 +108,7 @@ export const Logo = ({ dark = true, isNavbar = false }) => (
           fontWeight: 700,
         }}
       >
-        EST. 2004
+        EST. 1993
       </span>
     </div>
   </div>

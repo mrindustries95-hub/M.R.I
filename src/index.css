@@ -166,7 +166,7 @@
   font-size: 11px;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: #f5a623;
+  color: #c9921a;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -691,7 +691,7 @@
     font-size: 11px !important;
   }
   .sec-label {
-    font-size: 9px !important;
+    font-size: 11px !important;
     letter-spacing: 0.2em !important;
   }
   .g-sub {

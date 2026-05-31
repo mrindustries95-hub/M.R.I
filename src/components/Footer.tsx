@@ -40,7 +40,7 @@ export const Footer = ({
               }}
             >
               Leading manufacturers of high-precision borewell spares and
-              industrial MS/SS components since 1996.
+              industrial MS/SS components since 1993.
             </p>
             <div style={{ display: "flex", gap: 10, marginTop: 32 }}>
               <a

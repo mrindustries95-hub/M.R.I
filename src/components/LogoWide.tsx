@@ -19,7 +19,7 @@ const LogoWide: React.FC<{ small?: boolean }> = ({ small }) => (
       <div
         style={{ fontSize: small ? 10 : 12, color: "rgba(255,255,255,0.8)" }}
       >
-        EST. 1996
+        EST. 1993
       </div>
     </div>
   </div>

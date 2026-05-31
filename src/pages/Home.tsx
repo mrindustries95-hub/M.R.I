@@ -9,6 +9,8 @@ import {
 import { ScrollReveal } from "../components/ScrollReveal";
 import { MagneticButton } from "../components/MagneticButton";
 import heroBg from "../assets/images/BG.png";
+import productImage1 from "../assets/images/image.png";
+import productImage2 from "../assets/images/image1.png";
 
 const DottedParticles = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -370,13 +372,15 @@ const Hero = ({ openQuote }: { openQuote?: () => void }) => {
             maxWidth: 600,
             fontSize: 17,
             lineHeight: 1.85,
-            color: "#a89880",
+            color: "#c8b89a",
             margin: "44px auto 52px",
             fontWeight: 300,
           }}
         >
-          Specialized borewell spares and precision MS/SS components engineered
-          for extreme durability and industrial-grade performance.
+          Specialized borewell spares, precision MS/SS components, and
+          authorized dealers of UPVC piping systems from KMP, Ashirvad, and
+          Trubore — engineered for extreme durability, reliable water
+          management, and industrial-grade performance.
         </motion.p>
 
         <motion.div
@@ -386,7 +390,7 @@ const Hero = ({ openQuote }: { openQuote?: () => void }) => {
           className="sec-label"
           style={{ marginBottom: 32 }}
         >
-          Established in 1996
+          Established in 1993
         </motion.div>
 
         <motion.div
@@ -439,7 +443,7 @@ const Hero = ({ openQuote }: { openQuote?: () => void }) => {
               fontSize: 10,
               letterSpacing: "0.35em",
               textTransform: "uppercase",
-              color: "#a89880",
+              color: "#c8b89a",
               fontWeight: 700,
             }}
           >
@@ -518,7 +522,7 @@ const Stats = () => {
   }, []);
 
   const stats = [
-    { val: "30+", label: "Years Experience", sub: "Since 1996" },
+    { val: "30+", label: "Years Experience", sub: "Since 1993" },
     { val: "5000+", label: "Products", sub: "In Catalogue" },
     { val: "9001", label: "ISO Certified", sub: "Quality Mgmt" },
     { val: "100%", label: "Pan-India", sub: "Coverage" },
@@ -587,6 +591,140 @@ const Stats = () => {
   );
 };
 
+const ProductHighlight = () => {
+  const highlights = [
+    {
+      title:
+        "High quality fittings, adapters and accessories built for performance, durability and trust.",
+      image: productImage1,
+      points: [
+        "Premium grade materials for maximum performance",
+        "Precision engineered for perfect fit",
+        "Durability tested for long-lasting reliability",
+        "Trusted by industry leaders",
+      ],
+    },
+    {
+      title:
+        "High quality hose adapters, role wire, bore clamps and more engineered for strength.",
+      image: productImage2,
+      points: [
+        "High strength materials engineered for durability",
+        "Tested under extreme load conditions",
+        "Corrosion resistant for harsh environments",
+        "Built for industrial performance",
+      ],
+    },
+  ];
+
+  return (
+    <section
+      style={{
+        background: "#ffffff",
+        paddingTop: "clamp(24px, 5vw, 40px)",
+        paddingBottom: "clamp(24px, 5vw, 40px)",
+        borderTop: "1px solid #f0f0f0",
+        borderBottom: "1px solid #f0f0f0",
+      }}
+      className="section-padding"
+    >
+      <div className="container-max">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: "clamp(24px, 5vw, 50px)",
+          }}
+        >
+          {highlights.map((item, idx) => (
+            <ScrollReveal key={idx} animation="fade-up" delay={idx * 0.1}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <img
+                  src={item.image}
+                  alt={`Product ${idx + 1}`}
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    maxWidth: "clamp(200px, 100%, 280px)",
+                    maxHeight: "clamp(120px, 25vw, 200px)",
+                    objectFit: "cover",
+                    borderRadius: 6,
+                    marginBottom: "clamp(16px, 4vw, 24px)",
+                    border: "1px solid #e5e5e5",
+                  }}
+                />
+                <div style={{ width: "100%" }}>
+                  <p
+                    className="bb"
+                    style={{
+                      fontSize: "clamp(14px, 4vw, 18px)",
+                      lineHeight: 1.7,
+                      color: "#06080f",
+                      fontWeight: 700,
+                      letterSpacing: "-0.01em",
+                      fontFamily: "'DM Sans', sans-serif",
+                      marginBottom: 16,
+                      background:
+                        "linear-gradient(135deg, #06080f 0%, #F5A623 100%)",
+                      backgroundClip: "text",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                  >
+                    {item.title}
+                  </p>
+                  <ul
+                    style={{
+                      listStyle: "none",
+                      padding: 0,
+                      margin: 0,
+                    }}
+                  >
+                    {item.points.map((point, pidx) => (
+                      <li
+                        key={pidx}
+                        style={{
+                          fontSize: "clamp(12px, 2.5vw, 13px)",
+                          lineHeight: 1.5,
+                          color: "#555",
+                          fontWeight: 400,
+                          marginBottom: pidx < item.points.length - 1 ? 8 : 0,
+                          paddingLeft: 20,
+                          position: "relative",
+                          letterSpacing: "0.01em",
+                          fontFamily: "'DM Sans', sans-serif",
+                        }}
+                      >
+                        <span
+                          style={{
+                            position: "absolute",
+                            left: 0,
+                            color: "#F5A623",
+                            fontWeight: 700,
+                          }}
+                        >
+                          •
+                        </span>
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Features = () => {
   const feats = [
     {
@@ -643,15 +781,56 @@ const Features = () => {
                     {f.title}
                   </h3>
                   <p
+                    className="bc"
                     style={{
                       fontSize: 15,
                       lineHeight: 1.8,
-                      color: "#4a5568",
-                      fontWeight: 300,
+                      color: "#6d6969",
+
+                      letterSpacing: "0.02em",
+                      marginBottom: f.points ? 20 : 0,
+                      fontFamily: "'DM Sans', sans-serif",
                     }}
                   >
                     {f.desc}
                   </p>
+                  {f.points && (
+                    <ul
+                      style={{
+                        listStyle: "none",
+                        padding: 0,
+                        margin: 0,
+                      }}
+                    >
+                      {f.points.map((point, idx) => (
+                        <li
+                          key={idx}
+                          style={{
+                            fontSize: 13,
+                            lineHeight: 1.7,
+                            color: "#555",
+                            fontWeight: 400,
+                            marginBottom: idx < f.points.length - 1 ? 12 : 0,
+                            paddingLeft: 24,
+                            position: "relative",
+                            letterSpacing: "0.01em",
+                          }}
+                        >
+                          <span
+                            style={{
+                              position: "absolute",
+                              left: 0,
+                              color: "#F5A623",
+                              fontWeight: 700,
+                            }}
+                          >
+                            ✓
+                          </span>
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </ScrollReveal>
             </div>
@@ -738,6 +917,7 @@ export const Home = ({
       <Hero openQuote={openQuote} />
       <Marquee />
       <Stats />
+      <ProductHighlight />
       <Features />
       <CTA openQuote={openQuote} />
     </>

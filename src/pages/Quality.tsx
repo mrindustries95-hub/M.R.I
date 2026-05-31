@@ -125,22 +125,35 @@ const TrophyIcon = () => (
 export const Quality = () => {
   const awards = [
     {
-      year: "2006",
+      year: "1993 - 2003",
       isBadge: true,
-      title: "Schneider Electric",
-      desc: "Best Internationalization Support",
+      title: "Foundation & Company Registration",
+      desc: "Established in 1993 and officially registered in 2003, laying a strong foundation for manufacturing and supplying borewell spares and industrial components.",
     },
     {
-      year: "2020",
+      year: "2007",
       isBadge: false,
-      title: "John Deere",
-      desc: "Achieving Excellence Partner Level",
+      title: "TIN Registration Obtained",
+      desc: "Successfully obtained Taxpayer Identification Number (TIN), marking a significant milestone in the company's legal and business operations.",
     },
     {
-      year: "2012",
+      year: "2018",
       isBadge: true,
-      title: "Government of Tamil Nadu",
-      desc: 'Award for "Best Private Employer"',
+      title: "GST Registration",
+      desc: "Registered under the Goods and Services Tax (GST) system, enhancing compliance and expanding business opportunities across India.",
+    },
+
+    {
+      year: "2021",
+      isBadge: true,
+      title: "Ashirvad Pipes Best Seller Award",
+      desc: "Awarded Best Seller by Ashirvad Pipes for exceptional sales performance, customer satisfaction, and commitment to quality service.",
+    },
+    {
+      year: "2023",
+      isBadge: false,
+      title: "Trubore Pipes Best Seller Recognition",
+      desc: "Recognized as a Best Seller by Trubore Pipes for excellence in product distribution, market leadership, and consistent business growth.",
     },
     // removed later two awards per request
   ];
@@ -238,7 +251,7 @@ export const Quality = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: "50px",
+              gap: "30px",
             }}
           >
             <div
@@ -253,7 +266,7 @@ export const Quality = () => {
             </div>
 
             <div
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-8 gap-x-8 w-full"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-8  w-full"
               style={{ textAlign: "center" }}
             >
               {awards.map((award, i) => (
