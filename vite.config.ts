@@ -5,9 +5,10 @@ import { defineConfig, loadEnv } from "vite";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, ".", "");
+  // Use /M.R.I/ for GitHub Pages, / for Vercel (which has VERCEL env var)
+  const isVercel = process.env.VERCEL === "1";
   return {
-    // Use GitHub Pages base only for production builds; keep root for dev server
-    base: mode === "production" ? "/M.R.I/" : "/",
+    base: isVercel || mode === "development" ? "/" : "/M.R.I/",
     plugins: [react(), tailwindcss()],
     define: {
       "process.env.GEMINI_API_KEY": JSON.stringify(env.GEMINI_API_KEY),
