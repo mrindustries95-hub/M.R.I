@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Logo = ({ dark = true }: { dark?: boolean }) => (
+export const Logo = ({ dark = true, isNavbar = false }) => (
   <div
     style={{
       display: "flex",
@@ -19,10 +19,10 @@ export const Logo = ({ dark = true }: { dark?: boolean }) => (
         flexShrink: 0,
         transition: "transform 0.3s ease",
       }}
-      onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) =>
+      onMouseEnter={(e) =>
         (e.currentTarget.style.transform = "scale(1.15) rotate(5deg)")
       }
-      onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) =>
+      onMouseLeave={(e) =>
         (e.currentTarget.style.transform = "scale(1) rotate(0deg)")
       }
     >
@@ -66,24 +66,30 @@ export const Logo = ({ dark = true }: { dark?: boolean }) => (
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        gap: 2,
+        gap: isNavbar ? 1 : 2,
       }}
     >
       <span
-        className="bb"
         style={{
-          fontSize: 20,
-          letterSpacing: "0.05em",
+          fontFamily: isNavbar
+            ? "'Montserrat', sans-serif"
+            : "'Bebas Neue', sans-serif",
+
+          fontSize: isNavbar ? 21 : 20,
+          letterSpacing: isNavbar ? "0.07em" : "0.09em",
           color: dark ? "white" : "#1a1005",
           lineHeight: 1,
         }}
       >
-        M.R{" "}
+        M.R{"  "}
         <span
-          className="bb"
           style={{
-            fontSize: 20,
-            letterSpacing: "0.05em",
+            fontFamily: isNavbar
+              ? "'Montserrat', sans-serif"
+              : "'Bebas Neue', sans-serif",
+
+            fontSize: isNavbar ? 21 : 20,
+            letterSpacing: isNavbar ? "0.07em" : "0.09em",
             color: "#F5A623",
             lineHeight: 1,
           }}
@@ -102,7 +108,7 @@ export const Logo = ({ dark = true }: { dark?: boolean }) => (
           fontWeight: 700,
         }}
       >
-        EST. 1996
+        EST. 2004
       </span>
     </div>
   </div>

@@ -3,15 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Logo } from "./Logo";
 import { IconMenu, IconX } from "./Icons";
 
-export const Navbar = ({
-  activeSection,
-  scrollToSection,
-  openQuote,
-}: {
-  activeSection: string;
-  scrollToSection: (id: string) => void;
-  openQuote: () => void;
-}) => {
+export const Navbar = ({ activeSection, scrollToSection, openQuote }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mob, setMob] = useState(false);
   const isHome = activeSection === "home";
@@ -44,7 +36,6 @@ export const Navbar = ({
               ? "#0f1114"
               : "rgba(24, 20, 16, 0.6)"
             : "rgba(255, 255, 255, 0.97)",
-          /* removed backdrop blur to keep navbar sharp */
           borderBottom: isDark
             ? scrolled
               ? "2px solid #F5A623"
@@ -67,7 +58,7 @@ export const Navbar = ({
             onClick={() => scrollToSection("home")}
             style={{ cursor: "pointer" }}
           >
-            <Logo dark={isDark} />
+            <Logo dark={isDark} isNavbar={true} />
           </div>
 
           <div
@@ -98,12 +89,12 @@ export const Navbar = ({
                   paddingBottom: 4,
                   transition: "color 0.25s",
                 }}
-                onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
+                onMouseEnter={(e) => {
                   if (activeSection !== l.id) {
                     e.currentTarget.style.color = isDark ? "white" : "#d48a10";
                   }
                 }}
-                onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
+                onMouseLeave={(e) => {
                   if (activeSection !== l.id) {
                     e.currentTarget.style.color = isDark
                       ? "rgba(255,255,255,0.7)"
@@ -144,13 +135,13 @@ export const Navbar = ({
                 transform: "skewX(-12deg)",
                 transition: "all 0.3s",
               }}
-              onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
+              onMouseEnter={(e) => {
                 e.currentTarget.style.background = isDark
                   ? "#d48a10"
                   : "#F5A623";
                 e.currentTarget.style.color = isDark ? "#0f1114" : "#0f1114";
               }}
-              onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
+              onMouseLeave={(e) => {
                 e.currentTarget.style.background = isDark
                   ? "#F5A623"
                   : "#1a1005";
