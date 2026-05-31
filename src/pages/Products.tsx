@@ -253,71 +253,49 @@ const actualProducts = [
 export const Products: React.FC<{ openQuote?: (id?: string) => void }> = ({
   openQuote,
 }) => {
-  const [filter, setFilter] = useState<string>("SS Fittings");
+  const [filterKey, setFilterKey] = useState<string>("SS FITTINGS");
   // load product images with Vite's glob (returns URLs at build time)
   const images = (import.meta as any).glob(
     "../assets/images/products/*.{png,jpg,jpeg,svg}",
     { as: "url", eager: true },
   ) as Record<string, string>;
   // slugify helper to match product names to filenames
-  const slugify = (s: string) =>
-    s
+  // normalize image map: filenames -> url
+  const slugify = (str: string) =>
+    str
       .toLowerCase()
-      .replace(/&/g, "and")
-      .replace(/\.[^/.]+$/, "")
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
 
-  // normalize filenames to base slugs (handles spaces/caps in actual filenames)
-  const normalizedImages = Object.keys(images).reduce(
-    (acc, k) => {
-      const fn = k.split("/").pop() || "";
-      const base = slugify(fn);
-      // prefer png/jpg over svg when multiple variants exist
-      if (!acc[base]) acc[base] = (images as Record<string, string>)[k];
-      else {
-        const extOrder = ["png", "jpg", "jpeg", "svg"];
-        const existing = Object.keys(images).find(
-          (x) => (images as Record<string, string>)[x] === acc[base],
-        );
-        const existingExt = existing ? existing.split(".").pop() : "";
-        const newExt = fn.split(".").pop() || "";
-        if (extOrder.indexOf(newExt) < extOrder.indexOf(existingExt || "svg")) {
-          acc[base] = (images as Record<string, string>)[k];
-        }
-      }
+  const normalizedImages = Object.keys(images).reduce<Record<string, string>>(
+    (acc, p) => {
+      const parts = p.split("/");
+      const file = parts[parts.length - 1];
+      const name = file.replace(/\.(png|jpe?g|svg)$/i, "");
+      acc[slugify(name)] = images[p];
       return acc;
     },
-    {} as Record<string, string>,
+    {},
   );
 
-  // Create simpler grouping to fit on screen cleanly:
-  const groupedCats = {
-    "SS Fittings": actualProducts.filter((p) => p.cat === "SS Fittings"),
-    "MS Spares": actualProducts.filter((p) => p.cat === "MS Spares"),
-    "Valves & Caps": actualProducts.filter(
-      (p) => p.cat === "Valves" || p.cat === "Caps",
-    ),
-    "Pipes & Cables": actualProducts.filter(
-      (p) => p.cat === "Pipes" || p.cat === "Cables",
-    ),
-    Others: actualProducts.filter(
-      (p) =>
-        ![
-          "SS Fittings",
-          "MS Spares",
-          "Valves",
-          "Caps",
-          "Pipes",
-          "Cables",
-        ].includes(p.cat),
-    ),
-  };
+  // grouped filters to match previous UI
+  const filters = [
+    { key: "SS FITTINGS", matches: ["SS Fittings", "Fittings"] },
+    { key: "MS SPARES", matches: ["MS Spares"] },
+    { key: "VALVES & CAPS", matches: ["Valves", "Caps"] },
+    { key: "PIPES & CABLES", matches: ["Pipes", "Cables"] },
+    { key: "OTHERS", matches: [] },
+  ];
 
-  const cats = Object.keys(groupedCats);
-  const filtered =
-    (groupedCats as Record<string, typeof actualProducts>)[filter] ||
-    actualProducts;
+  const cats = Array.from(new Set(actualProducts.map((p) => p.cat))).sort();
+
+  const filtered = actualProducts.filter((p) => {
+    const active = filters.find((f) => f.key === filterKey);
+    if (!active) return true;
+    if (active.matches.length === 0)
+      return !filters.flatMap((f) => f.matches).includes(p.cat);
+    return active.matches.includes(p.cat);
+  });
 
   return (
     <>
@@ -326,6 +304,7 @@ export const Products: React.FC<{ openQuote?: (id?: string) => void }> = ({
         accent="INVENTORY"
         sub="A comprehensive catalogue of precision-engineered spares and components."
       />
+
       <div
         style={{
           background: "white",
@@ -347,137 +326,149 @@ export const Products: React.FC<{ openQuote?: (id?: string) => void }> = ({
           }}
         >
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            {cats.map((c) => (
+            {filters.map((f) => (
               <button
-                key={c}
-                onClick={() => setFilter(c)}
-                className={`fpill ${filter === c ? "on" : "off"}`}
+                key={f.key}
+                onClick={() => setFilterKey(f.key)}
+                className={`fpill ${filterKey === f.key ? "on" : "off"}`}
               >
-                {c}
+                {f.key}
               </button>
             ))}
           </div>
         </div>
       </div>
-      <div className="section-padding">
-        <div className="container-max">
+
+      <div className="section-padding" style={{ background: "#f3f6f8" }}>
+        <div className="container-max products-container">
           <div style={{ display: "grid", gap: 24 }} className="grid-3">
             {filtered.map((p: any, i: number) => (
               <div key={p.name}>
                 <ScrollReveal animation="zoom-in" delay={i * 0.02}>
-                  <div
-                    className="lpcard"
+                  <motion.div
+                    whileHover={{
+                      y: -3,
+                      border: "1px solid #d48a10",
+                      scale: 1.01,
+                      boxShadow: "0 12px 30px rgba(10, 20, 40, 0.08)",
+                    }}
+                    transition={{ type: "spring", stiffness: 220, damping: 18 }}
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      height: "100%",
+                      maxWidth: 760,
+                      margin: "0 auto",
+                      background: "white",
+                      border: "1px solid #e6eef4",
+
+                      padding: "32px",
+                      textAlign: "center",
+                      position: "relative",
+                      overflow: "hidden",
+                      borderRadius: 2,
+                      cursor: "pointer",
                     }}
                   >
                     <div
+                      className="igrid"
+                      style={{ position: "absolute", inset: 0, opacity: 0.01 }}
+                    />
+                    <div
                       style={{
-                        padding: "clamp(16px, 5vw, 28px)",
-                        flexGrow: 1,
-                        background: "#f8fafd",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                        marginBottom: 16,
                       }}
                     >
-                      <div
+                      <h3
+                        className="bc"
                         style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "flex-start",
+                          fontWeight: 800,
+                          fontSize: 18,
+                          color: "#0a1628",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.03em",
+                          lineHeight: 1.2,
+                        }}
+                      >
+                        {p.name}
+                      </h3>
+                      <span
+                        className="bc"
+                        style={{
+                          background: "#d48a10",
+                          color: "white",
+                          fontSize: 9,
+                          fontWeight: 700,
+                          letterSpacing: "0.15em",
+                          textTransform: "uppercase",
+                          padding: "3px 10px",
+                          flexShrink: 0,
+                          marginLeft: 8,
+                          borderRadius: 2,
+                        }}
+                      >
+                        {p.cat}
+                      </span>
+                    </div>
+                    {p.details && (
+                      <p
+                        style={{
+                          fontSize: 13,
+                          color: "#5a7080",
+                          lineHeight: 1.6,
+
                           marginBottom: 16,
                         }}
                       >
-                        <h3
-                          className="bc"
-                          style={{
-                            fontWeight: 800,
-                            fontSize: 18,
-                            color: "#0a1628",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.03em",
-                            lineHeight: 1.2,
-                          }}
-                        >
-                          {p.name}
-                        </h3>
-                        <span
-                          className="bc"
-                          style={{
-                            background: "#0099cc",
-                            color: "white",
-                            fontSize: 9,
-                            fontWeight: 700,
-                            letterSpacing: "0.15em",
-                            textTransform: "uppercase",
-                            padding: "3px 10px",
-                            flexShrink: 0,
-                            marginLeft: 8,
-                            borderRadius: 2,
-                          }}
-                        >
-                          {p.cat}
-                        </span>
-                      </div>
-                      {p.details && (
-                        <p
-                          style={{
-                            fontSize: 13,
-                            color: "#5a7080",
-                            lineHeight: 1.6,
-                            marginBottom: 16,
-                          }}
-                        >
-                          {p.details}
-                        </p>
-                      )}
-                      {/* product image (falls back to placeholder SVG created in assets) */}
-                      <div style={{ width: "100%", marginBottom: 12 }}>
-                        {(() => {
-                          const slug = slugify(p.name);
-                          const src =
-                            normalizedImages[slug] ??
-                            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500"><rect width="100%" height="100%" fill="%23f8fafd"/></svg>';
-                          return (
-                            <img
-                              src={src}
-                              alt={p.name}
-                              style={{
-                                width: "100%",
-                                height: 160,
-                                objectFit: "contain",
-                              }}
-                            />
-                          );
-                        })()}
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexWrap: "wrap",
-                          gap: 6,
-                          marginTop: "auto",
-                        }}
-                      >
-                        {p.sizes.map((s: string) => (
-                          <span
-                            key={s}
+                        {p.details}
+                      </p>
+                    )}
+                    {/* product image (falls back to placeholder SVG created in assets) */}
+                    <div style={{ width: "100%", marginBottom: 12 }}>
+                      {(() => {
+                        const slug = slugify(p.name);
+                        const src =
+                          normalizedImages[slug] ??
+                          'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500"><rect width="100%" height="100%" fill="%23f8fafd"/></svg>';
+                        return (
+                          <img
+                            src={src}
+                            alt={p.name}
                             style={{
-                              background: "white",
-                              border: "1px solid #d0dce8",
-                              color: "#3a4a5c",
-                              fontSize: 12,
-                              padding: "4px 8px",
-                              borderRadius: 2,
-                              fontWeight: 500,
+                              width: "100%",
+                              height: 160,
+                              objectFit: "contain",
                             }}
-                          >
-                            {s}
-                          </span>
-                        ))}
-                      </div>
+                          />
+                        );
+                      })()}
                     </div>
-                  </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: 6,
+                        marginTop: "auto",
+                      }}
+                    >
+                      {p.sizes.map((s: string) => (
+                        <span
+                          key={s}
+                          style={{
+                            background: "white",
+                            border: "1px solid #d0dce8",
+                            color: "#3a4a5c",
+                            fontSize: 12,
+                            padding: "4px 8px",
+                            borderRadius: 2,
+                            fontWeight: 500,
+                          }}
+                        >
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
                 </ScrollReveal>
               </div>
             ))}

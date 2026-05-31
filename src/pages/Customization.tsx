@@ -3,6 +3,7 @@ import { IconCheck } from "../components/Icons";
 import { LPageHeader } from "../components/LPageHeader";
 import { ScrollReveal } from "../components/ScrollReveal";
 import { MagneticButton } from "../components/MagneticButton";
+import companyImg from "../assets/images/company.jpeg";
 
 interface CustomizationProps {
   openQuote?: () => void;
@@ -28,7 +29,7 @@ export const Customization: React.FC<CustomizationProps> = ({ openQuote }) => (
                 style={
                   {
                     marginBottom: 20,
-                    "--c-cyan": "#0099cc",
+                    "--c-cyan": "#d48a10",
                     "--c-border": "none",
                   } as any
                 }
@@ -37,11 +38,11 @@ export const Customization: React.FC<CustomizationProps> = ({ openQuote }) => (
                   style={{
                     width: 32,
                     height: 1,
-                    background: "#0099cc",
+                    background: "#d48a10",
                     display: "inline-block",
                   }}
                 />
-                <span style={{ color: "#0099cc" }}>Bespoke Engineering</span>
+                <span style={{ color: "#d48a10" }}>Bespoke Engineering</span>
               </div>
               <h2
                 className="bb"
@@ -54,7 +55,7 @@ export const Customization: React.FC<CustomizationProps> = ({ openQuote }) => (
               >
                 YOUR SPEC,
                 <br />
-                <span style={{ color: "#0099cc" }}>OUR CRAFT</span>
+                <span style={{ color: "#d48a10" }}>OUR CRAFT</span>
               </h2>
               <p
                 style={{
@@ -122,7 +123,7 @@ export const Customization: React.FC<CustomizationProps> = ({ openQuote }) => (
                 }}
               />
               <img
-                src="src\assets\images\company.jpeg"
+                src={companyImg}
                 alt="Fabrication"
                 style={{
                   width: "100%",
@@ -137,7 +138,7 @@ export const Customization: React.FC<CustomizationProps> = ({ openQuote }) => (
                   position: "absolute",
                   bottom: -20,
                   right: -20,
-                  background: "#0088ff",
+                  background: "#F5A623",
                   padding: "20px 28px",
                 }}
               >

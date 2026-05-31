@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Logo: React.FC<{ dark?: boolean }> = ({ dark = true }) => (
+export const Logo = ({ dark = true }: { dark?: boolean }) => (
   <div
     style={{
       display: "flex",
@@ -19,10 +19,10 @@ export const Logo: React.FC<{ dark?: boolean }> = ({ dark = true }) => (
         flexShrink: 0,
         transition: "transform 0.3s ease",
       }}
-      onMouseEnter={(e) =>
+      onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) =>
         (e.currentTarget.style.transform = "scale(1.15) rotate(5deg)")
       }
-      onMouseLeave={(e) =>
+      onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) =>
         (e.currentTarget.style.transform = "scale(1) rotate(0deg)")
       }
     >
@@ -61,28 +61,48 @@ export const Logo: React.FC<{ dark?: boolean }> = ({ dark = true }) => (
         </text>
       </svg>
     </div>
-    <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        gap: 2,
+      }}
+    >
       <span
-        className="nav-brand"
+        className="bb"
         style={{
-          fontSize: 24,
-          color: dark ? "white" : "#0a1628",
+          fontSize: 20,
+          letterSpacing: "0.05em",
+          color: dark ? "white" : "#1a1005",
+          lineHeight: 1,
         }}
       >
-        M.R <span style={{ color: "#FF2E2E" }}>INDUSTRIES</span>
+        M.R{" "}
+        <span
+          className="bb"
+          style={{
+            fontSize: 20,
+            letterSpacing: "0.05em",
+            color: "#F5A623",
+            lineHeight: 1,
+          }}
+        >
+          INDUSTRIES
+        </span>
       </span>
       <span
         className="bc"
         style={{
-          fontSize: 10.5,
-          letterSpacing: "0.3em",
+          fontSize: 9.5,
+          letterSpacing: "0.2em",
           textTransform: "uppercase",
-          color: dark ? "rgba(255,255,255,0.4)" : "rgba(10,22,40,0.4)",
-          marginTop: 3,
+          color: dark ? "rgba(255,255,255,0.4)" : "rgba(26,16,5,0.4)",
+          lineHeight: 1,
           fontWeight: 700,
         }}
       >
-        Est. 1996
+        EST. 1996
       </span>
     </div>
   </div>

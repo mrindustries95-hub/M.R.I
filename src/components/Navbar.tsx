@@ -3,20 +3,19 @@ import { motion, AnimatePresence } from "motion/react";
 import { Logo } from "./Logo";
 import { IconMenu, IconX } from "./Icons";
 
-type NavbarProps = {
-  activeSection?: string;
-  scrollToSection: (id: string) => void;
-  openQuote?: () => void;
-};
-
-export const Navbar: React.FC<NavbarProps> = ({
+export const Navbar = ({
   activeSection,
   scrollToSection,
   openQuote,
+}: {
+  activeSection: string;
+  scrollToSection: (id: string) => void;
+  openQuote: () => void;
 }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mob, setMob] = useState(false);
   const isHome = activeSection === "home";
+  const isDark = isHome;
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
@@ -40,13 +39,17 @@ export const Navbar: React.FC<NavbarProps> = ({
           left: 0,
           width: "100%",
           zIndex: 100,
-          background: isHome
+          background: isDark
             ? scrolled
-              ? "rgba(6,8,15,0.95)"
-              : "rgba(6,8,15,0.6)"
-            : "rgba(255,255,255,0.97)",
-          backdropFilter: "blur(16px)",
-          borderBottom: `1px solid ${isHome ? (scrolled ? "rgba(0,136,255,0.15)" : "transparent") : "#d0dce8"}`,
+              ? "#0f1114"
+              : "rgba(24, 20, 16, 0.6)"
+            : "rgba(255, 255, 255, 0.97)",
+          /* removed backdrop blur to keep navbar sharp */
+          borderBottom: isDark
+            ? scrolled
+              ? "2px solid #F5A623"
+              : "1px solid transparent"
+            : "1px solid #d0dce8",
           transition: "all 0.4s",
         }}
       >
@@ -64,10 +67,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => scrollToSection("home")}
             style={{ cursor: "pointer" }}
           >
-            <Logo dark={isHome} />
+            <Logo dark={isDark} />
           </div>
 
-          <div className="dn-mob" style={{ gap: 36, alignItems: "center" }}>
+          <div
+            className="dn-mob"
+            style={{ display: "flex", gap: 36, alignItems: "center" }}
+          >
             {links.map((l) => (
               <button
                 key={l.id}
@@ -81,16 +87,28 @@ export const Navbar: React.FC<NavbarProps> = ({
                   fontSize: 12,
                   letterSpacing: "0.2em",
                   textTransform: "uppercase",
-                  color: isHome
+                  color: isDark
                     ? activeSection === l.id
-                      ? "#0088ff"
-                      : "rgba(200,216,232,0.65)"
+                      ? "#F5A623"
+                      : "rgba(255,255,255,0.7)"
                     : activeSection === l.id
-                      ? "#0099cc"
-                      : "#0a1628",
+                      ? "#d48a10"
+                      : "#1a1005",
                   position: "relative",
                   paddingBottom: 4,
                   transition: "color 0.25s",
+                }}
+                onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
+                  if (activeSection !== l.id) {
+                    e.currentTarget.style.color = isDark ? "white" : "#d48a10";
+                  }
+                }}
+                onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
+                  if (activeSection !== l.id) {
+                    e.currentTarget.style.color = isDark
+                      ? "rgba(255,255,255,0.7)"
+                      : "#1a1005";
+                  }
                 }}
               >
                 {l.label}
@@ -103,7 +121,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       left: 0,
                       right: 0,
                       height: 2,
-                      background: isHome ? "#0088ff" : "#0099cc",
+                      background: isDark ? "#F5A623" : "#d48a10",
                       borderRadius: 1,
                     }}
                   />
@@ -111,38 +129,39 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
             ))}
             <button
-              onClick={() => openQuote?.()}
+              onClick={openQuote}
               className="bc"
               style={{
-                background: isHome ? "transparent" : "#0a1628",
-                border: isHome ? "1.5px solid rgba(255,255,255,0.25)" : "none",
-                color: "white",
-                padding: "8px 22px",
+                background: isDark ? "#F5A623" : "#1a1005",
+                border: "none",
+                color: isDark ? "#0f1114" : "white",
+                padding: "10px 24px",
                 cursor: "pointer",
-                fontWeight: 700,
+                fontWeight: 800,
                 fontSize: 11,
-                letterSpacing: "0.2em",
+                letterSpacing: "0.15em",
                 textTransform: "uppercase",
-                borderRadius: 2,
+                transform: "skewX(-12deg)",
                 transition: "all 0.3s",
               }}
               onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
-                (e.currentTarget as HTMLButtonElement).style.background =
-                  "#0088ff";
-                (e.currentTarget as HTMLButtonElement).style.borderColor =
-                  "#0088ff";
-                (e.currentTarget as HTMLButtonElement).style.color = "#06080f";
+                e.currentTarget.style.background = isDark
+                  ? "#d48a10"
+                  : "#F5A623";
+                e.currentTarget.style.color = isDark ? "#0f1114" : "#0f1114";
               }}
               onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
-                (e.currentTarget as HTMLButtonElement).style.background = isHome
-                  ? "transparent"
-                  : "#0a1628";
-                (e.currentTarget as HTMLButtonElement).style.borderColor =
-                  isHome ? "rgba(255,255,255,0.25)" : "transparent";
-                (e.currentTarget as HTMLButtonElement).style.color = "white";
+                e.currentTarget.style.background = isDark
+                  ? "#F5A623"
+                  : "#1a1005";
+                e.currentTarget.style.color = isDark ? "#0f1114" : "white";
               }}
             >
-              Get a Quote
+              <span
+                style={{ display: "inline-block", transform: "skewX(12deg)" }}
+              >
+                Get a Quote
+              </span>
             </button>
           </div>
 
@@ -150,10 +169,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="show-mob"
             onClick={() => setMob(!mob)}
             style={{
+              display: "none",
               background: "none",
               border: "none",
               cursor: "pointer",
-              color: isHome ? "white" : "#0a1628",
+              color: isDark ? "white" : "#1a1005",
             }}
           >
             {mob ? <IconX /> : <IconMenu />}
@@ -168,8 +188,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               exit={{ height: 0, opacity: 0 }}
               style={{
                 overflow: "hidden",
-                background: isHome ? "#0b0f1c" : "white",
-                borderTop: `1px solid ${isHome ? "rgba(0,136,255,0.1)" : "#d0dce8"}`,
+                background: isDark ? "#0f1114" : "white",
+                borderTop: `1px solid ${isDark ? "rgba(245,166,35,0.15)" : "#d0dce8"}`,
               }}
             >
               <div
@@ -199,10 +219,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                       textTransform: "uppercase",
                       color:
                         activeSection === l.id
-                          ? "#0088ff"
-                          : isHome
+                          ? "#F5A623"
+                          : isDark
                             ? "white"
-                            : "#0a1628",
+                            : "#1a1005",
                     }}
                   >
                     {l.label}
@@ -211,7 +231,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   onClick={() => {
                     setMob(false);
-                    openQuote?.();
+                    openQuote();
                   }}
                   className="btn-p"
                   style={{ marginTop: 8 }}

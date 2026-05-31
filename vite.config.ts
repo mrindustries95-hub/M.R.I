@@ -6,8 +6,8 @@ import { defineConfig, loadEnv } from "vite";
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, ".", "");
   return {
-    // Base path for GitHub Pages. Matches repo name: mrindustries95-hub/M.R.I
-    base: "/M.R.I/",
+    // Use GitHub Pages base only for production builds; keep root for dev server
+    base: mode === "production" ? "/M.R.I/" : "/",
     plugins: [react(), tailwindcss()],
     define: {
       "process.env.GEMINI_API_KEY": JSON.stringify(env.GEMINI_API_KEY),

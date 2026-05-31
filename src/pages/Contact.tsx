@@ -235,6 +235,7 @@ export const Contact = () => (
                   <select
                     name="type"
                     required
+                    defaultValue=""
                     className="input-l"
                     style={{
                       width: "100%",
@@ -242,7 +243,7 @@ export const Contact = () => (
                       cursor: "pointer",
                     }}
                   >
-                    <option value="" disabled selected>
+                    <option value="" disabled>
                       Select an option
                     </option>
                     <option value="Fixed">Fixed Components</option>

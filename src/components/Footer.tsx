@@ -3,21 +3,30 @@ import { Logo } from "./Logo";
 import { IconPhone, IconMail, IconPin, IconInstagram } from "./Icons";
 import { ScrollReveal } from "./ScrollReveal";
 
-interface FooterProps {
-  scrollToSection?: (section: string) => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ scrollToSection }) => (
+export const Footer = ({
+  scrollToSection,
+}: {
+  scrollToSection: (id: string) => void;
+}) => (
   <footer
     style={{
       background: "#030608",
-      borderTop: "1px solid rgba(0,136,255,0.07)",
-      padding: "60px var(--section-px) 40px",
+      borderTop: "1px solid rgba(245,166,35,0.07)",
     }}
+    className="section-padding"
   >
     <div className="container-max">
       <ScrollReveal animation="fade-up">
-        <div style={{ marginBottom: 40 }} className="pgrid">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.5fr 1fr 1fr",
+            gap: 40,
+            marginBottom: 40,
+            flexWrap: "wrap",
+          }}
+          className="pgrid"
+        >
           <div>
             <Logo dark={true} />
             <p
@@ -31,43 +40,44 @@ export const Footer: React.FC<FooterProps> = ({ scrollToSection }) => (
               }}
             >
               Leading manufacturers of high-precision borewell spares and
-              industrial MS/SS components since 1995.
+              industrial MS/SS components since 1996.
             </p>
             <div style={{ display: "flex", gap: 10, marginTop: 32 }}>
-              {[
-                {
-                  url: "https://www.instagram.com/_mrindustries_?igsh=dGNtMjljemNlNDNi",
-                },
-              ].map((s, idx) => (
-                <a
-                  key={idx}
-                  href={s.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: "none" }}
-                >
-                  <button
-                    className="bc"
-                    style={{
-                      width: 36,
-                      height: 36,
-                      border: "1px solid rgba(255,255,255,0.06)",
-                      background: "transparent",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                      fontWeight: 700,
-                      fontSize: 11,
-                      color: "rgba(200,216,232,0.6)",
-                      transition: "all 0.25s",
-                      borderRadius: 2,
-                    }}
-                  >
-                    <IconInstagram size={16} />
-                  </button>
-                </a>
-              ))}
+              <a
+                href="https://www.instagram.com/_mrindustries_?igsh=dGNtMjljemNlNDNi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bc"
+                style={{
+                  width: 36,
+                  height: 36,
+                  border: "1px solid rgba(245,166,35,0.15)",
+                  background: "transparent",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  transition: "all 0.25s",
+                  borderRadius: 2,
+                  color: "rgba(200,216,232,0.35)",
+                }}
+                onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                  (e.currentTarget as HTMLElement).style.background = "#F5A623";
+                  (e.currentTarget as HTMLElement).style.color = "#1a1005";
+                  (e.currentTarget as HTMLElement).style.borderColor =
+                    "#F5A623";
+                }}
+                onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                  (e.currentTarget as HTMLElement).style.background =
+                    "transparent";
+                  (e.currentTarget as HTMLElement).style.color =
+                    "rgba(200,216,232,0.35)";
+                  (e.currentTarget as HTMLElement).style.borderColor =
+                    "rgba(245,166,35,0.15)";
+                }}
+              >
+                <IconInstagram size={18} />
+              </a>
             </div>
           </div>
           <div>
@@ -78,7 +88,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollToSection }) => (
                 fontSize: 12,
                 letterSpacing: "0.25em",
                 textTransform: "uppercase",
-                color: "#0088ff",
+                color: "#F5A623",
                 marginBottom: 28,
               }}
             >
@@ -87,9 +97,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollToSection }) => (
             {["Customization", "Quality", "Contact"].map((l) => (
               <button
                 key={l}
-                onClick={() =>
-                  scrollToSection && scrollToSection(l.toLowerCase())
-                }
+                onClick={() => scrollToSection(l.toLowerCase())}
                 style={{
                   display: "block",
                   background: "none",
@@ -104,7 +112,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollToSection }) => (
                   transition: "color 0.2s",
                 }}
                 onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) =>
-                  (e.currentTarget.style.color = "#0088ff")
+                  (e.currentTarget.style.color = "#F5A623")
                 }
                 onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) =>
                   (e.currentTarget.style.color = "rgba(200,216,232,0.35)")
@@ -122,7 +130,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollToSection }) => (
                 fontSize: 12,
                 letterSpacing: "0.25em",
                 textTransform: "uppercase",
-                color: "#0088ff",
+                color: "#F5A623",
                 marginBottom: 28,
               }}
             >
@@ -133,14 +141,20 @@ export const Footer: React.FC<FooterProps> = ({ scrollToSection }) => (
                 icon: <IconPhone size={16} />,
                 text: "9677844497 / 9443356217",
               },
-              {
-                icon: <IconMail size={16} />,
-                text: "mrindustries95@gmail.com",
-              },
+              { icon: <IconMail size={16} />, text: "info@mrindustries.com" },
               {
                 icon: <IconPin size={16} />,
-                text: "7/11, Jaya Shimman Street No.2 Avarampalyam, Ganapathy Post, Coimbatore - 641006",
-                url: "https://maps.app.goo.gl/8nnps4yj16MsmC6v9?g_st=aw",
+                text: (
+                  <a
+                    href="https://www.google.com/maps/place/M.R.Industries/@11.0345322,76.9820321,1400m/data=!3m1!1e3!4m9!1m2!2m1!1s7%2F11,+Jaya+Shimman+Street+No.2+Avarampalyam,+Ganapathy+Post,+Coimbatore+-+641006!3m5!1s0x3ba8591789225963:0xdc820dea3ee89709!8m2!3d11.0301385!4d76.9849448!16s%2Fg%2F11yx6rf68w?entry=ttu&g_ep=EgoyMDI2MDUyNy4wIKXMDSoASAFQAw%3D%3D"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "inherit", textDecoration: "underline" }}
+                  >
+                    7/11, Jaya Shimman Street No.2 Avarampalyam, Ganapathy Post,
+                    Coimbatore - 641006
+                  </a>
+                ),
               },
             ].map((c, i) => (
               <div
@@ -154,21 +168,10 @@ export const Footer: React.FC<FooterProps> = ({ scrollToSection }) => (
                   fontSize: 14,
                 }}
               >
-                <span style={{ color: "#0088ff", opacity: 0.65 }}>
+                <span style={{ color: "#F5A623", opacity: 0.65 }}>
                   {c.icon}
                 </span>
-                {c.url ? (
-                  <a
-                    href={c.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: "inherit", textDecoration: "none" }}
-                  >
-                    {c.text}
-                  </a>
-                ) : (
-                  c.text
-                )}
+                {c.text}
               </div>
             ))}
           </div>
@@ -176,8 +179,8 @@ export const Footer: React.FC<FooterProps> = ({ scrollToSection }) => (
       </ScrollReveal>
       <div
         style={{
-          paddingTop: 40,
-          borderTop: "1px solid rgba(0,136,255,0.05)",
+          paddingTop: 24,
+          borderTop: "1px solid rgba(245,166,35,0.05)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -189,15 +192,15 @@ export const Footer: React.FC<FooterProps> = ({ scrollToSection }) => (
           className="bc"
           style={{
             fontSize: 11,
-            color: "rgba(200,216,232,0.18)",
+            color: "rgba(200,216,232,0.28)",
             letterSpacing: "0.1em",
             textTransform: "uppercase",
           }}
         >
-          © 2026 M.R INDUSTRIES. All Rights Reserved.
+          © 2026 M.R Industries. All Rights Reserved.
         </span>
         <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-          {["ISO CERTIFIED", "MADE IN INDIA"].map((b, i) => (
+          {["MADE IN INDIA"].map((b, i) => (
             <span
               key={i}
               className="bc"
@@ -205,12 +208,12 @@ export const Footer: React.FC<FooterProps> = ({ scrollToSection }) => (
                 fontWeight: 700,
                 fontSize: 10,
                 letterSpacing: "0.2em",
-                color: "rgba(200,216,232,0.25)",
+                color: "rgba(200,216,232,0.45)",
               }}
             >
               {b}
               {i === 0 && (
-                <span style={{ marginLeft: 16, color: "rgba(0,136,255,0.3)" }}>
+                <span style={{ marginLeft: 16, color: "rgba(245,166,35,0.3)" }}>
                   |
                 </span>
               )}
